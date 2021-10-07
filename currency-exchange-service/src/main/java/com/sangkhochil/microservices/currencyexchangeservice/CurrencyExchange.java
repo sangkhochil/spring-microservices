@@ -7,6 +7,7 @@ public class CurrencyExchange {
 	private String from;
 	private String to;
 	private BigDecimal exchangeRate;
+	private String environment;
 
 	public CurrencyExchange() {
 	}
@@ -48,6 +49,14 @@ public class CurrencyExchange {
 
 	public void setExchangeRate(BigDecimal exchangeRate) {
 		this.exchangeRate = exchangeRate;
+	}
+
+	public String getEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 
 }
