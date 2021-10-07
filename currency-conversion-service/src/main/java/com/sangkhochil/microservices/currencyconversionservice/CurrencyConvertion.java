@@ -2,27 +2,44 @@ package com.sangkhochil.microservices.currencyconversionservice;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CurrencyConvertion {
+	
+//	The value in the @JsonProperty annotation is used for both deserializing and serializing.
+//	The value in the @JsonAlias annotation is only used for deserializing.
+
+	@JsonProperty("id")
 	private Long id;
+	
+	@JsonProperty("from")
 	private String from;
+	
+	@JsonProperty("to")
 	private String to;
+	
 	private BigDecimal quantity;
-	private BigDecimal conversionRate;	
+	
+	@JsonProperty("rate")
+	private BigDecimal conversionRate;
+	
 	private BigDecimal totalCalculatedAmount;
+	
+	@JsonProperty("environment")
 	private String environment;
 
 	public CurrencyConvertion() {
 	}
 
-	public CurrencyConvertion(Long id, String from, String to, BigDecimal quantity, BigDecimal conversionRate, 
-			BigDecimal totalCalculatedAmount, String environment) {
+	public CurrencyConvertion(Long id, String from, String to, BigDecimal quantity, BigDecimal conversionRate,
+			String environment) {
 		this.id = id;
 		this.from = from;
 		this.to = to;
 		this.conversionRate = conversionRate;
 		this.quantity = quantity;
-		this.totalCalculatedAmount = totalCalculatedAmount;
 		this.environment = environment;
+		this.totalCalculatedAmount = this.quantity.multiply(conversionRate);
 	}
 
 	public Long getId() {
