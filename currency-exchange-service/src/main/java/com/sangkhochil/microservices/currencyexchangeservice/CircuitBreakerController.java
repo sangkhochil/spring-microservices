@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 
 @RestController
@@ -17,7 +20,17 @@ public class CircuitBreakerController {
 	@GetMapping(path="/sample-api")
 	@Retry(name = "sample-api", fallbackMethod = "hardCodedresponse")
 	public String sampleApi() {
-		logger.info("sample-api call received");
+		logger.info("sample-api get called");
+		ResponseEntity<String> response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy", String.class);
+		return response.getBody();
+	}
+	
+	@GetMapping(path="/sample-circuitbreaker-api")
+	@CircuitBreaker(name="default", fallbackMethod = "hardCodedresponse")
+	//@RateLimiter(name="default")
+//	@Bulkhead(name="default")
+	public String sampleCircuitBreakerApi() {
+		logger.info("sample-circuitbreaker-api get called");
 		ResponseEntity<String> response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy", String.class);
 		return response.getBody();
 	}
