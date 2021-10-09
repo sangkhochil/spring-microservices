@@ -27,10 +27,16 @@ public class CircuitBreakerController {
 	
 	@GetMapping(path="/sample-circuitbreaker-api")
 	@CircuitBreaker(name="default", fallbackMethod = "hardCodedresponse")
-	//@RateLimiter(name="default")
-//	@Bulkhead(name="default")
 	public String sampleCircuitBreakerApi() {
 		logger.info("sample-circuitbreaker-api get called");
+		ResponseEntity<String> response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy", String.class);
+		return response.getBody();
+	}
+	
+	@GetMapping(path="/sample-ratelimiter-api")
+	@RateLimiter(name="default", fallbackMethod = "hardCodedresponse")
+	public String sampleRateLimiterApi() {
+		logger.info("sample-ratelimiter-api get called");
 		ResponseEntity<String> response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy", String.class);
 		return response.getBody();
 	}
