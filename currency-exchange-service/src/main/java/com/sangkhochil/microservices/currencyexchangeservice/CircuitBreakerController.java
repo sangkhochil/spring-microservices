@@ -41,6 +41,14 @@ public class CircuitBreakerController {
 		return response.getBody();
 	}
 	
+	@GetMapping(path="/sample-bulkhead-api")
+	@Bulkhead(name="default", fallbackMethod = "hardCodedresponse")
+	public String sampleBulkHeadApi() {
+		logger.info("sample-bulkhead-api get called");
+		ResponseEntity<String> response = new RestTemplate().getForEntity("http://localhost:8080/some-dummy", String.class);
+		return response.getBody();
+	}
+	
 	public String hardCodedresponse(Exception ex) {
 		return "fallback response";
 	}
